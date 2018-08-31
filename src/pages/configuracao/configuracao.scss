@@ -1,0 +1,18 @@
+#configuracao{
+    background-color: white;
+    .form{
+        padding-top: 19%;
+    } 
+    ion-toolbar{
+        .voltar{
+            text-align: left;
+        }
+        .configuracao{
+            text-align: center;
+        }
+        .salvar{
+            text-align: right;
+        }
+    }
+   
+}

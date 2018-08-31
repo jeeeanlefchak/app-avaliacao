@@ -1,0 +1,64 @@
+page-home {
+    .item-md.item-block .item-inner{
+        border-bottom: 0;
+    }
+    .item-ios.item-block .item-inner{
+        border-bottom: 0;
+    }
+    .textAvalie{
+        font-family: inherit;
+        font-size: 198%;
+        font-style: oblique;
+        font-weight: 400;
+        text-align: center; 
+    }
+    .nomeFun{
+        margin-top: 5%;
+    }
+    .dataHora{
+        position: absolute;
+        right: 1%;
+        top: 1%;
+        font-size: 83%;
+    }
+    .settings{
+        position: absolute;
+        /* right: 1%; */
+        left: 91%;
+        bottom: 1%;
+        z-index: 100;
+    }
+    .centroMensagem{
+        // height: 100%;
+        width: 100%;    
+        padding-top: 8%;
+        .span1{
+            text-align: center;
+            width: 100%;
+            // padding-top: 50%;
+            font-size: 315%;
+        }
+        .span2{
+            text-align: center;
+            width: 100%;
+            // padding-top: 50%;
+            font-size: 250%;
+        }
+    }
+    .centroRosto{
+        height: 100%;
+        width: 100%;
+        ion-col{
+            // padding-top: 50%;
+            ion-item{
+                position: absolute;
+            }
+        }
+    }
+    .fonte{
+        font-family: inherit;
+        font-size: 113%;
+        font-style: oblique;
+        font-weight: 402;
+    }
+}

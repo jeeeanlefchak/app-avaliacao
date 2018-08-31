@@ -1,0 +1,55 @@
+<ion-content padding [style.background-color]="cor">
+    <!-- //darkorchid -->
+    <ion-grid>
+        <!-- <ion-row class="dataHora"> -->
+        <span class="dataHora">{{dataLocal | date : 'dd/MM/yyyy'}} {{tempoLocal}}</span>
+        <!-- </ion-row> -->
+        <ion-row>
+            <ion-col col-12 ><span *ngIf="mostraEmpresa" class="fonte">{{empresa.nome}}</span></ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col col-7 class="nomeFun fonte"> <span *ngIf="mostraVendedor">{{funcionario}}</span></ion-col>
+            <ion-col col-5>
+                <ion-item>
+                    <ion-input  *ngIf="mostraNota" type="number" [(ngModel)]="numeroNota" placeholder="Nº Nota"></ion-input>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col class="textAvalie" col-12>Avalie Nosso Atendimento</ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-row class="centroRosto" *ngIf="!finalizado">
+        <ion-col col-3>
+            <ion-item>
+                <img (click)="avalia(1)" src="../../assets/imgs/1.png" />
+            </ion-item>
+        </ion-col>
+        <ion-col col-3>
+            <ion-item>
+                <img (click)="avalia(2)" src="../../assets/imgs/2.png" />
+            </ion-item>
+        </ion-col>
+        <ion-col col-3>
+            <ion-item>
+                <img (click)="avalia(3)" src="../../assets/imgs/3.png" />
+            </ion-item>
+        </ion-col>
+        <ion-col col-3>
+            <ion-item>
+                <img (click)="avalia(4)" src="../../assets/imgs/4.png" />
+            </ion-item>
+        </ion-col>
+    </ion-row>
+    <ion-row class="centroMensagem" *ngIf="finalizado">
+        <span class="span1">Obrigado </span>
+        <span class="span2">Volte Sempre!</span>
+    </ion-row>
+    <ion-row>
+            <button ion-button round outline class="settings" (click)="abrirConfiguracao()"> <ion-icon name="settings" ></ion-icon></button>
+        <!-- <div class="settings" >
+           
+        </div> -->
+    </ion-row>
+</ion-content>
