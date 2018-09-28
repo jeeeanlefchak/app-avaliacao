@@ -2,42 +2,41 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Storage } from '@ionic/storage';
 
 import { HomePage } from '../pages/home/home';
-import { Storage } from '@ionic/storage';
-import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { LoginPage } from '../pages/login/login';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   rootPage: any;
-  // netstat -ano | findstr :5037
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage,
-    private screenOrientation: ScreenOrientation) {
-    // storage.get('id').then((val) => {
-    //   if (val) {
-    //     this.rootPage = LoginPage;
-    //   } else {
-    this.rootPage = HomePage;
-    // this.screenOrientation.lock('LANDSCAPE_PRIMARY') ;
-    // this.screenOrientation.unlock();
-    console.log(this.screenOrientation.type);
-    
-    // }
-    // });
-    statusBar.hide();
+  public ip: string = 'www.devionn.com';
+  public porta : string = '38180';
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, public storage: Storage) {
+    storage.get('idEmpresa').then((val) => {
+      if (!val) {
+        this.rootPage = LoginPage;
+      } else {
+        this.rootPage = HomePage;
+      }
+    });
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      statusBar.styleDefault();
+      splashScreen.hide();
+    });
 
-    // platform.ready().then(() => {
-    //   statusBar.styleDefault();
-    //   splashScreen.hide();
-    // });
-  }
-
-  ngOnInit(){
-    // this.platform.ready().then(() => {
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
-    // })
+    storage.get("ip").then((res) => {
+      if (res == null) {
+        storage.set("ip", this.ip);
+        storage.set('porta', this.porta);
+      }
+      debugger
+    })
   }
 }
+
 

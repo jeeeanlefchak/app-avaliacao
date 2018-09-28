@@ -12,13 +12,14 @@
             <ion-col col-7 class="nomeFun fonte"> <span *ngIf="mostraVendedor">{{funcionario}}</span></ion-col>
             <ion-col col-5>
                 <ion-item>
-                    <ion-input  *ngIf="mostraNota" type="number" [(ngModel)]="numeroNota" placeholder="Nº Nota"></ion-input>
+                    <ion-input  *ngIf="mostraNota" type="number" [(ngModel)]="numeroNota" (ngModelChange)="digitandoNota()" placeholder="Nº Nota"></ion-input>
                 </ion-item>
+                <ion-label class="mensagemObrigatoria">{{mensagemObrigatorioNota}}</ion-label>
             </ion-col>
         </ion-row>
         <ion-row>
             <ion-col class="textAvalie" col-12>Avalie Nosso Atendimento</ion-col>
-        </ion-row>
+        </ion-row> 
     </ion-grid>
     <ion-row class="centroRosto" *ngIf="!finalizado">
         <ion-col col-3>

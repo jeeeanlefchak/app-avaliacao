@@ -8,17 +8,18 @@
         <ion-list>
             <ion-item>
                 <ion-label stacked>NOME DE USUARIO OU E-MAIL</ion-label>
-                <ion-input type="text"></ion-input>
+                <ion-input type="text" [(ngModel)]="empresa.login"  [ngModelOptions]="{standalone: true}" (click)="digitando()"></ion-input>
             </ion-item>
 
             <ion-item>
                 <ion-label stacked>SENHA</ion-label>
-                <ion-input type="password"></ion-input>
+                <ion-input type="password" [(ngModel)]="empresa.senha"  [ngModelOptions]="{standalone: true}" (click)="digitando()"></ion-input>
             </ion-item>
         </ion-list>
     </div>
+    <ion-label class="errado">{{loginSenhaErrado}}</ion-label>
     <div class="btn">
-        <button ion-button class="btnEntrar" [ngClass]="{'entrando': btnClass }">
+        <button ion-button class="btnEntrar" (click)="logar()" [ngClass]="{'entrando': btnClass }">
             <span *ngIf="!btnClass">Entrar</span>
             <ion-spinner *ngIf="btnClass"></ion-spinner>
         </button>

@@ -1,24 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FuncionarioService } from '../../service.ts/funcionario-service';
 import { Funcionario } from '../../models/funcionario';
 import { Storage } from '@ionic/storage';
 import { HomePage } from '../home/home';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { metodos } from '../../metodos';
+import { LoginPage } from '../login/login';
+import { AvancadoPage } from './avancado/avancado';
 @Component({
   selector: 'configuracao',
   templateUrl: 'configuracao.html',
   providers: [FuncionarioService]
 })
-export class ConfiguracaoPage {
+export class ConfiguracaoPage extends metodos implements OnInit {
   public funcionarios: Funcionario[];
   public funcionario;
   public mostraEmpresa: boolean = false;
   public mostraVendedor: boolean = false;
   public mostraNota: boolean = false;
+  public obrigatorioInformarNota :  boolean = false;
   public ip: string;
   public porta: number;
 
-  constructor(public navCtrl: NavController, public funcionarioService: FuncionarioService, public storage: Storage) {
+  constructor(public navCtrl: NavController, public funcionarioService: FuncionarioService, public storage: Storage,
+    public screenOrientation: ScreenOrientation) {
+    super(storage);
     this.buscaFuncionarios();
     this.storage.get('mostraEmpresa').then((val) => {
       this.mostraEmpresa = val;
@@ -29,8 +36,13 @@ export class ConfiguracaoPage {
     this.storage.get('mostraNota').then((val) => {
       this.mostraNota = val;
     });
+    this.storage.get('obrigatorioInformarNota').then((val) => {
+      this.obrigatorioInformarNota = val;
+    });
   }
-
+  ngOnInit() {
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE);
+  }
   public salvar() {
     this.voltar();
   }
@@ -39,20 +51,31 @@ export class ConfiguracaoPage {
     this.navCtrl.setRoot(HomePage);
   }
 
-  public buscaFuncionarios() {
-    this.funcionarioService.buscarFuncionarios().subscribe((data: Funcionario[]) => {
-      this.funcionarios = data;
-      this.storage.get('codVendedor').then((val) => {
-        console.log('Your age is', val);
-        for (let i of this.funcionarios) {
-          if (i.id.toString() == val) {
-            this.funcionario = i.nome;
-            break;
-          }
-        }
-      });
+  public avancado(){
+    this.navCtrl.setRoot(AvancadoPage);
+  }
 
-      console.log(data)
+  public sair(){
+    this.storage.remove("idEmpresa");
+    this.navCtrl.setRoot(LoginPage);
+
+  }
+  public buscaFuncionarios() {
+    this.storage.get("idEmpresa").then((idEmpresa) => {
+      idEmpresa = parseInt(idEmpresa);
+      this.funcionarioService.buscarFuncionarios(this.idEmpresa).subscribe((data: Funcionario[]) => {
+        this.funcionarios = data;
+        this.storage.get('codVendedor').then((val) => {
+          console.log('Your age is', val);
+          for (let i of this.funcionarios) {
+            if (i.id.toString() == val) {
+              this.funcionario = i.nome;
+              break;
+            }
+          }
+        });
+        console.log(data)
+      })
     })
   }
 
@@ -77,7 +100,12 @@ export class ConfiguracaoPage {
 
   public nota(event) {
     this.mostraNota = event;
+    if(!event)this.obrigatorioNota(false)
     this.storage.set('mostraNota', event);
   }
 
+  public obrigatorioNota(event){
+    this.obrigatorioInformarNota = event;
+    this.storage.set('obrigatorioInformarNota', event);
+  }
 }

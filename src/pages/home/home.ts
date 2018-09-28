@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, ModalController, AlertController } from 'ionic-angular';
 import { EmpresaService } from '../../service.ts/empresa-service';
 import { Empresa } from '../../models/empresa';
@@ -9,30 +9,32 @@ import { ConfiguracaoPage } from '../configuracao/configuracao';
 import { Storage } from '@ionic/storage';
 import { Nota } from '../../models/nota';
 import { NotaService } from '../../service.ts/nota-service';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 @Component({
 	selector: 'page-home',
 	templateUrl: 'home.html',
 	providers: [EmpresaService, FuncionarioService, NotaService]
 })
-export class HomePage extends metodos {
+export class HomePage extends metodos implements OnInit {
 	public empresa: Empresa = new Empresa();
 	public funcionarios: Funcionario[];
 	public funcionario: string;
 	public vendedor: Funcionario = new Funcionario();
 	public nota: Nota = new Nota();
 	public numeroNota: string;
-	public finalizado : boolean = false;
-	public mostraVendedor : boolean = true;
-	public mostraEmpresa : boolean = true;
-	public mostraNota : boolean = true;
-	
+	public finalizado: boolean = false;
+	public mostraVendedor: boolean = true;
+	public mostraEmpresa: boolean = true;
+	public mostraNota: boolean = true;
+	public obrigatorioInformarNota: boolean = true;
+	public mensagemObrigatorioNota: string;
 	constructor(public navCtrl: NavController,
 		public empresaService: EmpresaService,
 		public funcionarioService: FuncionarioService,
 		public storage: Storage,
 		public notaService: NotaService,
-		public alertCtrl: AlertController,) {
+		public alertCtrl: AlertController, public screenOrientation: ScreenOrientation) {
 		super(storage);
 		this.buscaEmpresa();
 		this.buscaFuncionarios();
@@ -47,12 +49,30 @@ export class HomePage extends metodos {
 		this.storage.get('mostraNota').then((val) => {
 			this.mostraNota = val;
 		});
+		this.storage.get('obrigatorioInformarNota').then((val) => {
+			this.obrigatorioInformarNota = val;
+		})
 	}
 	public abrirConfiguracao() {
 		this.navCtrl.setRoot(ConfiguracaoPage);
 	}
 
+	ngOnInit() {
+		this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.LANDSCAPE_PRIMARY);
+	}
+
 	public avalia(peso) {
+		console.log(peso)
+		if (this.obrigatorioInformarNota) {
+			if (this.numeroNota == undefined) {
+				this.mensagemObrigatorioNota = 'Informe o Numero da Nota';
+				return;
+			} else if (this.numeroNota.length <= 1) {
+				this.mensagemObrigatorioNota = 'Informe o Numero da Nota';
+				return;
+			}
+		}
+
 		this.nota.nota = peso;
 		this.nota.idFuncionario = this.vendedor.id;
 		this.nota.numeroNota = this.numeroNota;
@@ -67,27 +87,33 @@ export class HomePage extends metodos {
 		this.notaService.save(this.nota).subscribe((nota: Nota) => {
 			this.finalizado = true;
 			this.numeroNota = null;
+			setTimeout(() => {
+				this.finalizado = false;
+			}, 2000);
 		}, err => {
 			this.showError(err);
 			this.finalizado = false;
 		})
 		setTimeout(() => {
 			this.finalizado = false;
-		}, 1500);
+		}, 2000);
 	}
 
 	public buscaFuncionarios() {
-		this.funcionarioService.buscarFuncionarios().subscribe((data: Funcionario[]) => {
-			this.funcionarios = data;
-			this.storage.get('codVendedor').then((val) => {
-				for (let i of this.funcionarios) {
-					if (i.id.toString() == val) {
-						this.funcionario = i.nome;
-						this.vendedor = i;
-						break;
+		this.storage.get("idEmpresa").then((idEmpresa) => {
+			idEmpresa = parseInt(idEmpresa);
+			this.funcionarioService.buscarFuncionarios(idEmpresa).subscribe((data: Funcionario[]) => {
+				this.funcionarios = data;
+				this.storage.get('codVendedor').then((val) => {
+					for (let i of this.funcionarios) {
+						if (i.id.toString() == val) {
+							this.funcionario = i.nome;
+							this.vendedor = i;
+							break;
+						}
 					}
-				}
-			});
+				});
+			})
 		})
 	}
 
@@ -125,10 +151,14 @@ export class HomePage extends metodos {
 
 	public showError(msg) {
 		const alert = this.alertCtrl.create({
-		  title: 'Erro',
-		  subTitle: "Conexão com oServidor Falhou" ,
-		  buttons: ['OK']
+			title: 'Erro',
+			subTitle: "Conexão com oServidor Falhou",
+			buttons: ['OK']
 		});
 		alert.present();
-	  }
+	}
+
+	public digitandoNota() {
+		this.mensagemObrigatorioNota = null;
+	}
 }

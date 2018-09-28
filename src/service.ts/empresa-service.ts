@@ -22,4 +22,11 @@ export class EmpresaService extends AbstractService<Empresa> {
     });
   }
 
+  public logar(obj) {
+    let url = this.urlWebBase + '/logar';
+    return this.http.post(url, obj).map(res => {
+      return res.json();
+    })
+  }
+
 }

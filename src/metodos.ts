@@ -5,10 +5,18 @@ export class metodos {
     public tempoLocal: string;
     public dataLocal: Date = new Date();
     public cor : string;
+    public idEmpresa : number;
     constructor(public storage : Storage) {
         this.montaTempoLocal();
         storage.get('cor').then((cor)=>{
           this.cor = cor;
+        })
+        this.pegaIdEmpresa();
+    }
+
+    public pegaIdEmpresa(){
+        this.storage.get("idEmpresa").then((idEmpresa)=>{
+            this.idEmpresa = parseInt(idEmpresa);
         })
     }
 

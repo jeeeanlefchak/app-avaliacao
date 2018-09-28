@@ -1,16 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { IonicApp,  IonicModule } from 'ionic-angular';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { LoginPage } from '../pages/login/login';
-import { HttpModule} from '@angular/http';
-import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
+import { ConfiguracaoPage } from '../pages/configuracao/configuracao';
+import { LoginPage } from '../pages/login/login';
+import { IonicStorageModule } from '@ionic/storage';
+import { HttpModule } from '@angular/http';
+import { AvancadoPage } from '../pages/configuracao/avancado/avancado';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
     HomePage,
     LoginPage,
     ConfiguracaoPage,
+    AvancadoPage
   ],
   imports: [
     BrowserModule,
@@ -32,6 +34,7 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
     HomePage,
     LoginPage,
     ConfiguracaoPage,
+    AvancadoPage
   ],
   providers: [
     StatusBar,

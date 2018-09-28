@@ -15,8 +15,15 @@ export class FuncionarioService extends AbstractService<Funcionario> {
     return 'funcionario';
   }
 
-  public buscarFuncionarios() {
-    let url = this.urlWebBase + "/funcionarios";
+  public buscarFuncionarios(idEmpresa) {
+    let url = this.urlWebBase + "/funcionarios/" + idEmpresa;
+    return this.http.get(url).map(res => {
+      return res.json();
+    });
+  }
+
+  public testarConexao() {
+    let url = this.urlWebBase + "/testeconexao";
     return this.http.get(url).map(res => {
       return res.json();
     });

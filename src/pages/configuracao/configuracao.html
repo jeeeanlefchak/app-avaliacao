@@ -6,8 +6,8 @@
                     <span (click)="voltar()">Voltar</span></ion-col>
                 <ion-col col-6 class="configuracao">
                     <span>Configuração</span></ion-col>
-                <!-- <ion-col col-3  class="salvar">
-                    <span (click)="salvar" >Salvar</span></ion-col> -->
+                    <!-- <ion-col (click)="avancado()" col-3 class="avancado">
+                        <span>Avançado</span></ion-col> -->
             </ion-row>
         </ion-toolbar>
     </ion-header>
@@ -30,6 +30,10 @@
             <ion-label>Exibir Nota</ion-label>
             <ion-toggle [(ngModel)]="mostraNota" (ngModelChange)="nota($event)"></ion-toggle>
         </ion-item>
+        <ion-item>
+            <ion-label>Obrigatorio Informar Nota</ion-label>
+            <ion-toggle [(ngModel)]="obrigatorioInformarNota" (ngModelChange)="obrigatorioNota($event)"></ion-toggle>
+        </ion-item>
         <!-- <ion-item>
             <ion-label floating>IP</ion-label>
             <ion-input type="text" [(ngModel)]="ip"></ion-input>
@@ -39,4 +43,13 @@
             <ion-input type="number" [(ngModel)]="porta"></ion-input>
         </ion-item> -->
     <!-- </ion-list> -->
+    
+    <ion-item  (click)="sair()" class="Sair">
+        
+        <ion-label>Sair <ion-icon class="icon-menu"  ios="ios-log-out" md="md-log-out" end></ion-icon>  </ion-label>
+        <!-- <ion-toggle [(ngModel)]="obrigatorioInformarNota" (ngModelChange)="obrigatorioNota($event)"></ion-toggle> -->
+    </ion-item>
+    <!-- <button ion-button class="btnSair" (click)="sair()">
+        <span >Sair</span>
+    </button> -->
 </div>

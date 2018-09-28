@@ -1,5 +1,7 @@
 #configuracao{
     background-color: white;
+    height: 100%;
+    overflow: scroll;
     .form{
         padding-top: 19%;
     } 
@@ -10,8 +12,19 @@
         .configuracao{
             text-align: center;
         }
-        .salvar{
+        .avancado{
             text-align: right;
+        }
+    }
+    .btnSair{
+        width: 52%;
+        margin-left: 23%;
+    }
+    .Sair{
+        cursor: pointer;
+        ion-icon{
+            text-align: end;
+            width: 93%;
         }
     }
    

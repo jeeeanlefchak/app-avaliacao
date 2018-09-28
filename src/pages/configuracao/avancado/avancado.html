@@ -1,0 +1,43 @@
+<div class="principal" *ngIf="!senhasConferem">
+    <div class="title">
+        <ion-title>
+            Configurações Avançadas
+        </ion-title>
+    </div>
+    <div class="form">
+        <ion-list>
+            <ion-item>
+                <ion-label stacked>SENHA</ion-label>
+                <ion-input type="password" [(ngModel)]="senha" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+        </ion-list>
+    </div>
+    <div class="btn">
+        <button ion-button class="btnEntrar" (click)="acessar()">
+            <span>Acessar</span>
+            <ion-spinner *ngIf="btnClass"></ion-spinner>
+        </button>
+    </div>
+</div>
+<div class="principal" *ngIf="senhasConferem">
+    <div class="form">
+        <ion-list>
+            <ion-item>
+                <ion-label stacked>IP</ion-label>
+                <ion-input type="text" [(ngModel)]="ip" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+        </ion-list>
+        <ion-list>
+            <ion-item>
+                <ion-label stacked>PORTA</ion-label>
+                <ion-input type="text" [(ngModel)]="porta" [ngModelOptions]="{standalone: true}"></ion-input>
+            </ion-item>
+        </ion-list>
+    </div>
+    <div class="btn">
+        <button ion-button class="btnEntrar" (click)="testarConexao()">
+            <span>Testar Conexão</span>
+            <ion-spinner *ngIf="btnClass"></ion-spinner>
+        </button>
+    </div>
+</div>
