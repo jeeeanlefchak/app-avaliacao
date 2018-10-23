@@ -36,8 +36,6 @@ export class HomePage extends metodos implements OnInit {
 		public notaService: NotaService,
 		public alertCtrl: AlertController, public screenOrientation: ScreenOrientation) {
 		super(storage);
-		this.buscaEmpresa();
-		this.buscaFuncionarios();
 
 		this.storage.get('mostraEmpresa').then((val) => {
 			this.mostraEmpresa = val;
@@ -52,6 +50,8 @@ export class HomePage extends metodos implements OnInit {
 		this.storage.get('obrigatorioInformarNota').then((val) => {
 			this.obrigatorioInformarNota = val;
 		})
+		this.buscaFuncionarios();
+		this.verificaIdParaBuscarEmpresa();
 	}
 	public abrirConfiguracao() {
 		this.navCtrl.setRoot(ConfiguracaoPage);
@@ -89,14 +89,14 @@ export class HomePage extends metodos implements OnInit {
 			this.numeroNota = null;
 			setTimeout(() => {
 				this.finalizado = false;
-			}, 2000);
+			}, 4000);
 		}, err => {
 			this.showError(err);
 			this.finalizado = false;
 		})
 		setTimeout(() => {
 			this.finalizado = false;
-		}, 2000);
+		}, 4000);
 	}
 
 	public buscaFuncionarios() {
@@ -117,10 +117,22 @@ export class HomePage extends metodos implements OnInit {
 		})
 	}
 
-	public buscaEmpresa() {
-		this.empresaService.buscarEmpresa().subscribe((empresa: Empresa) => {
-			if (empresa[0].nome != null) {
-				this.empresa = empresa[0];
+	public verificaIdParaBuscarEmpresa() {
+		console.log(this.idEmpresa)
+		if (this.idEmpresa == null) {
+			this.storage.get("idEmpresa").then((idEmpresa) => {
+				this.idEmpresa = parseInt(idEmpresa);
+				this.buscaEmprsa(this.idEmpresa);
+			})
+		} else {
+			this.buscaEmprsa(this.idEmpresa);
+		}
+	}
+
+	public buscaEmprsa(id) {
+		this.empresaService.findById(id).subscribe((empresa: Empresa) => {
+			if (empresa.nome != null) {
+				this.empresa = empresa;
 			}
 			console.log("EMPRESA", empresa);
 		})

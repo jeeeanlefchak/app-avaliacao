@@ -29,13 +29,12 @@ export class MyApp {
       splashScreen.hide();
     });
 
-    storage.get("ip").then((res) => {
-      if (res == null) {
-        storage.set("ip", this.ip);
-        storage.set('porta', this.porta);
-      }
-      debugger
-    })
+    // storage.get("ip").then((res) => {
+    //   if (res == null) {
+    //     storage.set("ip", this.ip);
+    //     storage.set('porta', this.porta);
+    //   }
+    // })
   }
 }
 
